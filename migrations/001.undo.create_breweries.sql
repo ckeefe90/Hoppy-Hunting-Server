@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS breweries;
+DROP TYPE IF EXISTS star_rating;
