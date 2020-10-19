@@ -1,28 +1,28 @@
-const BreweriesService = {
-    getAllBreweries(knex) {
-        return knex.select('*').from('breweries')
+const BreweryService = {
+    getAllBrewery(knex) {
+        return knex.select('*').from('brewery')
     },
     insertBrewery(knex, newBrewery) {
         return knex
             .insert(newBrewery)
-            .into('breweries')
+            .into('brewery')
             .returning('*')
             .then(rows => {
                 return rows[0]
             })
     },
     getById(knex, id) {
-        return knex('breweries')
+        return knex('brewery')
             .where({ id })
             .delete()
     },
     deleteBrewery(knex, id) {
-        return knex('breweries')
+        return knex('brewery')
             .where({ id })
             .delete()
     },
     updateBrewery(knex, id, newBreweryFields) {
-        return knex('breweries')
+        return knex('brewery')
             .where({ id })
             .update(newBreweryFields)
     },
