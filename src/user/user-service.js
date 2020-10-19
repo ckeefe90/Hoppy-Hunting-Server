@@ -1,18 +1,18 @@
-const UsersService = {
+const UserService = {
     getAllUsers(knex) {
-        return knex.select('*').from('users')
+        return knex.select('*').from('user')
     },
     insertUser(knex, newUser) {
         return knex
             .insert(newUser)
-            .into('users')
+            .into('user')
             .returning('*')
-            .then(rows =? {
+            .then(rows => {
                 return rows[0]
             })
     },
     getById(knex, id) {
-        return knex('users')
+        return knex('user')
             .where({ id })
             .delete()
     },
@@ -22,10 +22,10 @@ const UsersService = {
             .delete()
     },
     updateUser(knex, id, newUserFields) {
-        return knex('users')
+        return knex('user')
             .where({ id })
             .update(newUserFields)
     },
 }
 
-module.exports = UsersService
+module.exports = UserService
