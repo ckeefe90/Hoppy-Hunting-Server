@@ -1,31 +1,27 @@
 const UserService = {
     getAllUsers(knex) {
-        return knex.select('*').from('user')
+        return knex.select('*').from('users')
     },
     insertUser(knex, newUser) {
         return knex
             .insert(newUser)
-            .into('user')
+            .into('users')
             .returning('*')
             .then(rows => {
                 return rows[0]
             })
     },
     getById(knex, id) {
-        return knex('user')
+        return knex('users')
             .where({ id })
             .delete()
     },
-    deleteUser(knex, id) {
-        return knex('folders')
-            .where({ id })
-            .delete()
-    },
-    updateUser(knex, id, newUserFields) {
-        return knex('user')
-            .where({ id })
-            .update(newUserFields)
-    },
+    validateCredentials(knex, email, password) {
+        return knex('users')
+            .where({ email, password })
+            .select('id')
+            .first()
+    }
 }
 
 module.exports = UserService

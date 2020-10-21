@@ -29,11 +29,12 @@ function makeMaliciousBrewery() {
         id: 911,
         name: 'Naughty naughty very naughty <script>alert("xss");</script>',
         address: '911 Bad Road, Bad City, NH, 03217',
-        comments: 'This is a bad brewery'
+        comments: 'This is a bad brewery',
+        user_id: 1
     }
     const expectedBrewery = {
         ...maliciousBrewery,
-        name: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;'
+        name: 'Naughty naughty very naughty &lt;script&gt;alert("xss");&lt;/script&gt;'
     }
     return {
         maliciousBrewery,
@@ -41,4 +42,8 @@ function makeMaliciousBrewery() {
     }
 }
 
-module.exports = { makeBreweryArray, makeMaliciousBrewery }
+function getUserAuthToken(user) {
+    return Buffer.from(`${user.email}:${user.password}`).toString("base64")
+}
+
+module.exports = { makeBreweryArray, makeMaliciousBrewery, getUserAuthToken }
