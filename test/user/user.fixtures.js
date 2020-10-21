@@ -18,20 +18,4 @@ function makeUserArray() {
     ];
 }
 
-function makeMaliciousUser() {
-    const maliciousUser = {
-        id: 911,
-        email: 'Malicious Email <script>alert("xss");</script>',
-        password: 'User Password'
-    }
-    const expectedUser = {
-        ...maliciousUser,
-        email: 'Malicious Email &lt;script&gt;alert(\"xss\");&lt;/script&gt'
-    }
-    return {
-        maliciousUser,
-        expectedUser
-    }
-}
-
-module.exports = { makeUserArray, makeMaliciousUser }
+module.exports = { makeUserArray }

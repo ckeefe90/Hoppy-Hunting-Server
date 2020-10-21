@@ -228,8 +228,6 @@ describe('Brewery Endpoints', function () {
         context('Given a specific user is authenticated', () => {
             it('creates an brewery that belongs to the user responding with 201 and the new brewery', () => {
                 const user = testUsers[1]
-                const breweryId = 2
-                const expectedBrewery = testBreweries.find(brewery => brewery.id === breweryId)
                 const newBrewery = {
                     name: 'Test new brewery',
                     address: 'Brewery address',

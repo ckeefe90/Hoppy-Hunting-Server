@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
     res.send('Hello, world!')
 })
 
-app.use('/api/users', userRouter)
+app.use('/api', userRouter)
 
 app.use(async function validateToken(req, res, next) {
     function unauthorized() {
