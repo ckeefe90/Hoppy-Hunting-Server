@@ -91,7 +91,7 @@ describe('Brewery Endpoints', function () {
                     const user = testUsers[1]
                     return supertest(app)
                         .get('/api/breweries')
-                        .set('Authorization', `Basic ${getUserAuthToken(user)}`)
+                        .set('Authorization', `Bearer ${getUserAuthToken(user)}`)
                         .expect(200, testBreweries.filter(brewery => brewery.user_id === user.id).map(brewery => ({ ...brewery, rating: null })))
                 })
             })
@@ -128,7 +128,7 @@ describe('Brewery Endpoints', function () {
                     const expectedBrewery = testBreweries.find(brewery => brewery.id === breweryId)
                     return supertest(app)
                         .get(`/api/breweries/${breweryId}`)
-                        .set('Authorization', `Basic ${getUserAuthToken(user)}`)
+                        .set('Authorization', `Bearer ${getUserAuthToken(user)}`)
                         .expect(200, { ...expectedBrewery, rating: null })
                 })
                 it('responds with a 403 if the specified brewery does not belong to the user', () => {
@@ -136,7 +136,7 @@ describe('Brewery Endpoints', function () {
                     const expectedBrewery = testBreweries.find(brewery => brewery.id === breweryId)
                     return supertest(app)
                         .get(`/api/breweries/${breweryId}`)
-                        .set('Authorization', `Basic ${getUserAuthToken(user)}`)
+                        .set('Authorization', `Bearer ${getUserAuthToken(user)}`)
                         .expect(403, { error: { message: `Access is forbidden` } })
                 })
             })
@@ -235,7 +235,7 @@ describe('Brewery Endpoints', function () {
                 }
                 return supertest(app)
                     .post('/api/breweries')
-                    .set('Authorization', `Basic ${getUserAuthToken(user)}`)
+                    .set('Authorization', `Bearer ${getUserAuthToken(user)}`)
                     .send(newBrewery)
                     .expect(201)
                     .expect(res => {
@@ -249,7 +249,7 @@ describe('Brewery Endpoints', function () {
                     .then(postRes => {
                         supertest(app)
                             .get(`/api/breweries/${postRes.body.id}`)
-                            .set('Authorization', `Basic ${getUserAuthToken(user)}`)
+                            .set('Authorization', `Bearer ${getUserAuthToken(user)}`)
                             .expect(postRes.body)
                     })
             })

@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken')
+
 function makeBreweryArray() {
     return [
         {
@@ -43,7 +45,7 @@ function makeMaliciousBrewery() {
 }
 
 function getUserAuthToken(user) {
-    return Buffer.from(`${user.email}:${user.password}`).toString("base64")
+    return jwt.sign(user, process.env.JWT_SECRET)
 }
 
 module.exports = { makeBreweryArray, makeMaliciousBrewery, getUserAuthToken }

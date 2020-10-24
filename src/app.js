@@ -7,7 +7,7 @@ const { NODE_ENV, CLIENT_ORIGIN } = require('./config')
 const userRouter = require('./user/user-router')
 const breweryRouter = require('./brewery/brewery-router')
 const logger = require('./logger')
-const UserService = require('./user/user-service')
+const jwt = require('jsonwebtoken')
 
 const app = express()
 
@@ -42,18 +42,18 @@ app.use(async function validateToken(req, res, next) {
         return unauthorized()
     }
     const [authType, token] = authToken.split(' ');
-    if (authType === "Bearer" && token !== apiToken) {
+    if (authType === "Bearer") {
+        if (token !== apiToken) {
+            try {
+                const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+                res.locals.user_id = decodedToken.id;
+            } catch (e) {
+                return unauthorized()
+            }
+        }
+    } else {
         return unauthorized()
     }
-    if (authType === "Basic") {
-        const [email, password] = Buffer.from(token, 'base64').toString().split(':');
-        const user = await UserService.validateCredentials(req.app.get('db'), email, password)
-        if (!user) {
-            return unauthorized()
-        }
-        res.locals.user_id = user.id;
-    }
-    // move to the next middleware
     next()
 })
 

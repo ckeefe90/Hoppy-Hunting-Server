@@ -1,6 +1,5 @@
 const path = require('path')
 const express = require('express')
-const { v4: uuid } = require('uuid')
 const xss = require('xss')
 const BreweryService = require('./brewery-service')
 const logger = require('../logger')
@@ -68,7 +67,6 @@ breweryRouter
                 }
                 const userId = res.locals.user_id
                 if (userId && brewery.user_id !== userId) {
-                    console.log(brewery, userId)
                     return res.status(403).json({ error: { message: `Access is forbidden` } })
                 }
                 res.brewery = brewery

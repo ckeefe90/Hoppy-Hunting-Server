@@ -1,6 +1,8 @@
 const knex = require('knex')
 const app = require('../../src/app')
 const { makeUserArray } = require('./user.fixtures')
+const jwt = require('jsonwebtoken')
+const { expect } = require('chai')
 
 describe('Users Endpoints', function () {
     let db
@@ -32,7 +34,10 @@ describe('Users Endpoints', function () {
                 .send(newUser)
                 .expect(201)
                 .expect(res => {
-                    expect(res.body).to.have.property('id')
+                    const token = jwt.verify(res.body, process.env.JWT_SECRET)
+                    expect(token).to.have.property('id')
+                    const sevenDays = Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 7)
+                    expect(token.exp).to.eql(sevenDays)
                 })
         })
 
@@ -80,7 +85,13 @@ describe('Users Endpoints', function () {
             return supertest(app)
                 .post('/api/login')
                 .send(existingUser)
-                .expect(200, { id: existingUser.id })
+                .expect(200)
+                .expect(res => {
+                    const token = jwt.verify(res.body, process.env.JWT_SECRET)
+                    expect(token.id).to.eql(existingUser.id)
+                    const sevenDays = Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 7)
+                    expect(token.exp).to.eql(sevenDays)
+                })
         })
     })
 })

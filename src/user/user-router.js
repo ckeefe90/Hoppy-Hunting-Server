@@ -1,8 +1,13 @@
 const express = require('express')
 const UserService = require('./user-service')
+const jwt = require('jsonwebtoken')
 
 const userRouter = express.Router()
 const jsonParser = express.json()
+
+function createUserJwt(user) {
+    return jwt.sign({ ...user }, process.env.JWT_SECRET, { expiresIn: "7d" });
+}
 
 userRouter
     .route('/signup')
@@ -25,7 +30,7 @@ userRouter
             .then(user => {
                 res
                     .status(201)
-                    .json(user)
+                    .json(createUserJwt(user))
             })
             .catch(next)
     })
@@ -43,7 +48,7 @@ userRouter
                 }
                 return res
                     .status(200)
-                    .json(user)
+                    .json(createUserJwt(user))
             })
     })
 
