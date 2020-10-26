@@ -32,6 +32,7 @@ breweryRouter
         const newBrewery = { name, address, comments, user_id }
 
         for (const [key, value] of Object.entries(newBrewery)) {
+            if (key === "comments") continue;
             if (res.locals.user_id && key === "user_id") continue;
             if (!value) {
                 return res.status(400).json({ error: { message: `Missing '${key}' in request body` } })
@@ -40,7 +41,7 @@ breweryRouter
 
         newBrewery.name = name;
         newBrewery.address = address;
-        newBrewery.comments = comments;
+        newBrewery.comments = comments || '';
         newBrewery.user_id = res.locals.user_id || user_id;
 
         const knexInstance = req.app.get('db')

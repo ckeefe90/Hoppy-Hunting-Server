@@ -205,7 +205,7 @@ describe('Brewery Endpoints', function () {
                 })
         })
 
-        const requiredFields = ['name', 'address', 'comments']
+        const requiredFields = ['name', 'address']
 
         requiredFields.forEach(field => {
             const newBrewery = {
